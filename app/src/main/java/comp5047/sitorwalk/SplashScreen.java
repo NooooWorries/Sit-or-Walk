@@ -1,12 +1,27 @@
 package comp5047.sitorwalk;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.Response;
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -83,6 +98,8 @@ public class SplashScreen extends AppCompatActivity {
         }
     };
 
+    private Button btnDummy;
+    private RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +122,36 @@ public class SplashScreen extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+        btnDummy = (Button)findViewById(R.id.dummy_button);
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        // Get Request
+
+        // Set the endpoint of RESTful service
+
+        requestQueue = Volley.newRequestQueue(this);
+        getStatus();
+
+
+    }
+
+    private void getStatus()
+    {
+        String url = "https://us.wio.seeed.io/v1/node/GroveGyroITG3200I2C0/zerocalibrate?access_token=673ed62c1fbea1216db3c84add3d5238";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String repoName = response.optString("result");
+                btnDummy.setText(repoName);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // If there a HTTP error then add a note to our repo list.
+                Log.e("Volley", error.toString());
+            }
+        });
+        requestQueue.add(request);
     }
 
     @Override
