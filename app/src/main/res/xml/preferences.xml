@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceScreen
+        android:id="@+id/stepCounter"
+        android:icon="?android:attr/actionModePasteDrawable"
+        android:key="key_step_counter"
+        android:persistent="false"
+        android:title="Step Counter">
+
+        <EditTextPreference
+            android:id="@+id/settings_step_target"
+            android:defaultValue="10000"
+            android:key="key_step_target"
+            android:summary="Set your daily step target"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Daily step target" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_step_notification"
+            android:title="Notification" />
+
+        <comp5047.sitorwalk.Settings.TimePreference
+            android:defaultValue="18:00"
+            android:key="key_step_time"
+            android:summary="Time to inform you to finish your daily target"
+            android:title="Notification time" />
+
+    </PreferenceScreen>
+</PreferenceScreen>

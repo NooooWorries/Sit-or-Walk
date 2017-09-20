@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "215198321736",
+    "firebase_url": "https://sit-or-walk.firebaseio.com",
+    "project_id": "sit-or-walk",
+    "storage_bucket": "sit-or-walk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215198321736:android:7546b2714c691c3a",
+        "android_client_info": {
+          "package_name": "comp5047.sitorwalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215198321736-9acurmun70qrmmpk3g7bpld4in4008mj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comp5047.sitorwalk",
+            "certificate_hash": "669d2aa9cc79eb70973d879a59ad5a49f430288e"
+          }
+        },
+        {
+          "client_id": "215198321736-2qhq0gnu5kftg50krg33o9g253a9d0qe.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "215198321736-q4661rc86ivlkipn4j5jt41mmmifu0o4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWrdYzXAgbzuGbIUwDR_IqfDveHIOMbTw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
