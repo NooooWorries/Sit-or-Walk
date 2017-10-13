@@ -1,9 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="comp5047.sitorwalk.HomeFragment">
+    android:orientation="vertical"
+    tools:context="com.hammer.sitorwalk.HomeFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/banner_home_walk"
+                android:src="@mipmap/banner_home_walk"
                 android:id="@+id/messageImage"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,5 +67,64 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-
-</FrameLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/sitCard">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/banner_home_sit"
+                android:id="@+id/sitImage"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Sit"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:id="@+id/titleSit"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You sitted 0 hours 0 minutes today"
+                    android:textColor="#555"
+                    android:id="@+id/textSit"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="7dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DETAIL"
+                    android:theme="@style/PrimaryFlatButton"
+                    android:gravity="left"
+                    android:id="@+id/btnSitDetail"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HISTORY"
+                    android:theme="@style/PrimaryFlatButton"
+                    android:gravity="left"
+                    android:id="@+id/btnSitHistory"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

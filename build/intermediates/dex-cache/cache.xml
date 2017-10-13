@@ -3,12 +3,12 @@
 
     <item
         is-multidex="false"
-        jar="/Users/chengzixin1/.android/build-cache/ca003c62527dd1b02d289727c6151901dd5cbe65/output/jars/classes.jar"
+        jar="/Users/chengzixin1/Desktop/Sit-or-Walk/app/libs/lite-orm-1.7.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="914f5d3e3ace66080e59613708f06d129a222e25">
-        <dex dex="/Users/chengzixin1/Desktop/Sit-or-Walk/app/build/intermediates/pre-dexed/debug/classes_8e4e367f5c59f0e44ac5a44732a1146ba7b83bf3.jar" />
+        sha1="bf59a1eca660fa671d66922676c035846c94e5d5">
+        <dex dex="/Users/chengzixin1/Desktop/Sit-or-Walk/app/build/intermediates/pre-dexed/debug/lite-orm-1.7.0_17ac55ffa47069d20cfe8ebb4792d6e453c95fb8.jar" />
     </item>
 
 </items>

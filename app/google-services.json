@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:215198321736:android:7546b2714c691c3a",
         "android_client_info": {
-          "package_name": "comp5047.sitorwalk"
+          "package_name": "com.hammer.sitorwalk"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "215198321736-9acurmun70qrmmpk3g7bpld4in4008mj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "comp5047.sitorwalk",
+            "package_name": "com.hammer.sitorwalk",
             "certificate_hash": "669d2aa9cc79eb70973d879a59ad5a49f430288e"
           }
         },

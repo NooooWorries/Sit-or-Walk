@@ -22,7 +22,7 @@
             android:key="key_step_notification"
             android:title="Notification" />
 
-        <comp5047.sitorwalk.Settings.TimePreference
+        <com.hammer.sitorwalk.Settings.TimePreference
             android:defaultValue="18:00"
             android:key="key_step_time"
             android:summary="Time to inform you to finish your daily target"
