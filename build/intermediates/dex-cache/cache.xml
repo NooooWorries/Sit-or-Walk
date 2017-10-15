@@ -3,6 +3,24 @@
 
     <item
         is-multidex="false"
+        jar="/Users/chengzixin1/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="c4ba5371a29ac9b2ad6129b1d39ea38750043eff">
+        <dex dex="/Users/chengzixin1/Desktop/Sit-or-Walk/app/build/intermediates/pre-dexed/debug/gson-2.8.0_538d23aed9a39cfc57acf7a1dc61463371e4e0a8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/chengzixin1/.android/build-cache/db1dcdf5c0a2e2ce2fa11c6dc7350e1e50a46ec5/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="3d7ba2eb647e082275b2a65ddcf2233d4c1e3c1a">
+        <dex dex="/Users/chengzixin1/Desktop/Sit-or-Walk/app/build/intermediates/pre-dexed/debug/classes_59fa9c4972d0df47927247a16f1e26b074e9760d.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/Users/chengzixin1/Desktop/Sit-or-Walk/app/libs/lite-orm-1.7.0.jar"
         jumboMode="false"
         optimize="true"

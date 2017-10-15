@@ -23,9 +23,7 @@
         android:required="true" />
     <!-- End of user feature list -->
 
-    <!-- Services list -->
 
-    <!-- End of services list-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -52,9 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- Receiver list -->
-        <receiver android:name="com.hammer.sitorwalk.background.StepCountClear" />
+        <receiver android:name="com.hammer.sitorwalk.StepCounter.StepCountClear" />
         <!-- End of receiver list -->
+
+        <!-- Services list -->
+        <service android:name=".StepCounter.StepCountService" />
+        <!-- End of services list-->
     </application>
 
 </manifest>

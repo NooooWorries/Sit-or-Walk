@@ -7,19 +7,17 @@ package com.hammer.sitorwalk;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import java.util.Calendar;
-import android.icu.util.TimeZone;
+
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.hammer.sitorwalk.background.StepCountClear;
+import com.hammer.sitorwalk.StepCounter.StepCountClear;
+import com.hammer.sitorwalk.StepCounter.StepCountService;
 
 public class SplashActivity extends AppCompatActivity {
     Calendar mCalendar;
@@ -34,6 +32,10 @@ public class SplashActivity extends AppCompatActivity {
         // Start services
         // Clear step count at 0:00 every day
         setStepCountClearServices();
+
+        // Pedometer service
+        Intent startPedometerIntent = new Intent(SplashActivity.this, StepCountService.class);
+        startService(startPedometerIntent);
 
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);

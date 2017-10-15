@@ -1,14 +1,11 @@
 package com.hammer.sitorwalk;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.icu.util.Calendar;
-import android.icu.util.TimeZone;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -22,10 +19,9 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.android.volley.VolleyError;
 import com.hammer.sitorwalk.Settings.SettingsActivity;
 import com.hammer.sitorwalk.StepCounter.PedometerFragment;
-import com.hammer.sitorwalk.background.StepCountClear;
+import com.hammer.sitorwalk.StepCounter.StepCountService;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -34,6 +30,24 @@ public class MainActivity extends AppCompatActivity
     // Global variables for fragment
     Fragment fragment;
     FragmentManager fragmentManager;
+
+    // Service binder
+    private StepCountService.PedometerBinder binder;
+
+    // Service connection
+    private ServiceConnection pedometerConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (StepCountService.PedometerBinder) service;
+            binder.startCounting();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+
+        }
+    };
 
 
     @Override
@@ -66,6 +80,10 @@ public class MainActivity extends AppCompatActivity
         fragment = new HomeFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+
+        // Bind pedometer service
+        Intent bindPedometerIntent = new Intent(this, StepCountService.class);
+        bindService(bindPedometerIntent, pedometerConnection, BIND_AUTO_CREATE);
 
 
 

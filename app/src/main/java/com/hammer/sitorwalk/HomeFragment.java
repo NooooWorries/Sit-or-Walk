@@ -23,15 +23,7 @@ import com.hammer.sitorwalk.StepCounter.StepDetector;
 import com.hammer.sitorwalk.StepCounter.StepListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment implements SensorEventListener, StepListener {
+public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,11 +36,11 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     // View
     View view;
 
-    // Global variables for pedometer
-    private StepDetector simpleStepDetector;
-    private SensorManager sensorManager;
-    private Sensor accel;
-    private int recordSteps;
+//    // Global variables for pedometer
+//    private StepDetector simpleStepDetector;
+//    private SensorManager sensorManager;
+//    private Sensor accel;
+//    private int recordSteps;
 
     // Global variables for widgets
     private TextView textSteps;
@@ -60,6 +52,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     // Global variables for fragment
     Fragment fragment;
     FragmentManager fragmentManager;
+
+    private int recordSteps;
+
+
 
 
     // TODO: Rename and change types of parameters
@@ -93,13 +89,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         actionBar.setTitle("Home");
 
-        // Start pedometer service
-        // Get an instance of the SensorManager
-        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        simpleStepDetector = new StepDetector();
-        simpleStepDetector.registerListener(this);
-        sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
@@ -117,13 +106,24 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         // Find text view
         textSteps = (TextView)view.findViewById(R.id.textStep);
 
-        // Initialize shared settings
+        // Get shared preference
         sharedPref = getActivity().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
         // Load numSteps from shared preference
         recordSteps = sharedPref.getInt(getString(R.string.settings_num_steps), 0);
         textSteps.setText("You walked " + recordSteps + " steps today");
+
+        // Add preference on changed listener (detect step counts change)
+        SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if(isAdded() && key.equals("numSteps")){
+                    textSteps.setText("You walked " + sharedPref.getInt(getString(R.string.settings_num_steps), 0) + " steps today");
+                }
+            }
+        };
+        sharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
         // Add button listener
         // Walk detail
@@ -134,7 +134,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                 fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
             }
         });
-
 
         return view;
     }
@@ -150,26 +149,4 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            simpleStepDetector.updateAccel(
-                    event.timestamp, event.values[0], event.values[1], event.values[2]);
-        }
-    }
-
-    @Override
-    public void step(long timeNs) {
-        int steps = sharedPref.getInt(getString(R.string.settings_num_steps), 0);
-        steps++;
-        textSteps.setText("You walked " + steps + " steps today");
-        editor.putInt("numSteps", steps);
-        editor.commit();
-    }
-
 }
