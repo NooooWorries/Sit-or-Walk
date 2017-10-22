@@ -32,21 +32,22 @@ public class HistoryRepo {
         return (int)id;
     }
 
-    public ArrayList<HashMap<String, String>> getStudentList(){
+    public ArrayList<HistoryModel> getList(){
         SQLiteDatabase db=dbHelper.getReadableDatabase();
         String selectQuery="SELECT "+
                 HistoryModel.KEY_ID+","+
                 HistoryModel.KEY_DATE+","+
                 HistoryModel.KEY_STEPS+" FROM "+ HistoryModel.TABLE;
-        ArrayList<HashMap<String,String>> historyList=new ArrayList<HashMap<String, String>>();
+        ArrayList<HistoryModel> historyList=new ArrayList<HistoryModel>();
         Cursor cursor=db.rawQuery(selectQuery,null);
 
         if(cursor.moveToFirst()){
             do{
-                HashMap<String,String> history=new HashMap<String,String>();
-                history.put("id",cursor.getString(cursor.getColumnIndex(HistoryModel.KEY_ID)));
-                history.put("date",cursor.getString(cursor.getColumnIndex(HistoryModel.KEY_DATE)));
-                history.put("steps",cursor.getString(cursor.getColumnIndex(HistoryModel.KEY_STEPS)));
+                HistoryModel history=new HistoryModel(
+                        cursor.getInt(cursor.getColumnIndex(HistoryModel.KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(HistoryModel.KEY_DATE)),
+                        cursor.getInt(cursor.getColumnIndex(HistoryModel.KEY_STEPS))
+                );
                 historyList.add(history);
             }while(cursor.moveToNext());
         }

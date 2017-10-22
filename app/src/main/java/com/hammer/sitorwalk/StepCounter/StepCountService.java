@@ -81,7 +81,7 @@ public class StepCountService extends Service implements SensorEventListener, St
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    // Execute pedometer actions
+
                 }
             }).start();
         }

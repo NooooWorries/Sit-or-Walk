@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.hammer.sitorwalk.SitCounter.SitCountService;
 import com.hammer.sitorwalk.StepCounter.StepCountClear;
 import com.hammer.sitorwalk.StepCounter.StepCountService;
 
@@ -37,6 +38,11 @@ public class SplashActivity extends AppCompatActivity {
         Intent startPedometerIntent = new Intent(SplashActivity.this, StepCountService.class);
         startService(startPedometerIntent);
 
+        // Sit count service
+        Intent startSitCountService = new Intent(SplashActivity.this, SitCountService.class);
+        startService(startSitCountService);
+
+
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -56,14 +62,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setStepCountClearServices() {
-        //得到日历实例，主要是为了下面的获取时间
         mCalendar = Calendar.getInstance();
         mCalendar.setTimeInMillis(System.currentTimeMillis());
 
-        //获取当前毫秒值
         long systemTime = System.currentTimeMillis();
 
-        //是设置日历的时间，主要是让日历的年月日和当前同步
         mCalendar.setTimeInMillis(System.currentTimeMillis());
 
         mCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -73,7 +76,6 @@ public class SplashActivity extends AppCompatActivity {
 
         long selectTime = mCalendar.getTimeInMillis();
 
-        // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
         if(systemTime > selectTime) {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }

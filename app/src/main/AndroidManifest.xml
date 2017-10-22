@@ -57,6 +57,7 @@
 
         <!-- Services list -->
         <service android:name=".StepCounter.StepCountService" />
+        <service android:name=".SitCounter.SitCountService" />
         <!-- End of services list-->
     </application>
 

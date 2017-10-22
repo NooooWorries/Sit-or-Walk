@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ public class StepCountClear extends BroadcastReceiver {
         SharedPreferences.Editor editor = sharedPref.edit();
             Toast.makeText(context, Integer.toString(sharedPref.getInt("numSteps", 0)),
                     Toast.LENGTH_LONG).show();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editorSit = settings.edit();
 
         // Get the date of yesterday
         Calendar date = Calendar.getInstance();
@@ -51,6 +55,8 @@ public class StepCountClear extends BroadcastReceiver {
         repo.insert(historyModel);
 
         editor.putInt("numSteps", 0).commit();
+
+        // Add sit count to database
 
     }
 }

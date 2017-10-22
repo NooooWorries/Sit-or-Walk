@@ -1,17 +1,15 @@
 package com.hammer.sitorwalk;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hammer.sitorwalk.StepCounter.PedometerFragment;
-import com.hammer.sitorwalk.StepCounter.StepDetector;
-import com.hammer.sitorwalk.StepCounter.StepListener;
+import com.hammer.sitorwalk.StepCounter.StepCountHistoryFragment;
 
 
 public class HomeFragment extends Fragment {
@@ -31,32 +28,29 @@ public class HomeFragment extends Fragment {
     private static final String PREFERENCE_NAME = "stepCountPref";
 
     // Buttons
-    Button btnWalkDetail;
+    private Button btnWalkDetail;
+    private Button btnWalkHistory;
 
     // View
     View view;
 
-//    // Global variables for pedometer
-//    private StepDetector simpleStepDetector;
-//    private SensorManager sensorManager;
-//    private Sensor accel;
-//    private int recordSteps;
-
     // Global variables for widgets
     private TextView textSteps;
+    private TextView textConnection;
+    private TextView textSit;
+
 
     // Global variables for settings
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
+    SharedPreferences settings;
 
     // Global variables for fragment
     Fragment fragment;
     FragmentManager fragmentManager;
 
     private int recordSteps;
-
-
-
+    private int connectionStatus = 0;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -102,20 +96,32 @@ public class HomeFragment extends Fragment {
 
         // Find buttons
         btnWalkDetail = (Button)view.findViewById(R.id.btnWalkDetail);
+        btnWalkHistory = (Button)view.findViewById(R.id.btnWalkHistory);
 
         // Find text view
         textSteps = (TextView)view.findViewById(R.id.textStep);
+        textConnection = (TextView)view.findViewById(R.id.textConnection);
+        textSit = (TextView)view.findViewById(R.id.textSit);
 
         // Get shared preference
         sharedPref = getActivity().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
+        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         // Load numSteps from shared preference
         recordSteps = sharedPref.getInt(getString(R.string.settings_num_steps), 0);
         textSteps.setText("You walked " + recordSteps + " steps today");
 
+        // Load sit duration from shared preference
+        int value = settings.getInt("sit", 0);
+        int hours = value / 60;
+        int minutes = value % 60;
+        textSit.setText("You sitted " + Integer.toString(hours) + " hours " + Integer.toString(minutes) + " minutes today");
+
+        textConnection.setText("WAIT FOR ONE MINUTE");
+        textConnection.setTextColor(Color.BLUE);
         // Add preference on changed listener (detect step counts change)
-        SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        SharedPreferences.OnSharedPreferenceChangeListener numStepsChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if(isAdded() && key.equals("numSteps")){
@@ -123,8 +129,38 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
-        sharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+        sharedPref.registerOnSharedPreferenceChangeListener(numStepsChangeListener);
 
+        SharedPreferences.OnSharedPreferenceChangeListener sitCountChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (isAdded()) {
+                    if (key.equals("sit")) {
+                        int value = settings.getInt("sit", 0);
+                        int hours = value / 60;
+                        int minutes = value % 60;
+                        textSit.setText("You sitted " + Integer.toString(hours) + " hours " + Integer.toString(minutes) + " minutes today");
+                    }
+                    // Load connection status
+                    connectionStatus = settings.getInt("sensor", 0);
+                    if (connectionStatus == 0) {
+                        textConnection.setText("DISCONNECTED");
+                        textConnection.setTextColor(Color.RED);
+                    }
+                    else if (connectionStatus == 1) {
+                        textConnection.setText("CONNECTED");
+                        textConnection.setTextColor(Color.BLUE);
+                    }
+                    else {
+                        textConnection.setText("INTERNET ERROR");
+                        textConnection.setTextColor(Color.RED);
+
+                    }
+                }
+            }
+        };
+
+        settings.registerOnSharedPreferenceChangeListener(sitCountChangeListener);
         // Add button listener
         // Walk detail
         btnWalkDetail.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +171,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Walk history
+        btnWalkHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new StepCountHistoryFragment();
+                fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+            }
+        });
         return view;
     }
 

@@ -40,7 +40,6 @@ public class SettingsActivity extends Activity {
 
     }
 
-
     // The code below is used to create setting fragment
     // Do not need to modify it
     @Override
@@ -56,9 +55,6 @@ public class SettingsActivity extends Activity {
                 .commit();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Log.d("hhhhh", sharedPreferences.getString("key_step_time", "DEFAULT"));
-
     }
 
     // Set the status bar color
@@ -68,8 +64,5 @@ public class SettingsActivity extends Activity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
-
-
-
 
 }

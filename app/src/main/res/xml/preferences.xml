@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <EditTextPreference
+        android:id="@+id/settings_token"
+        android:defaultValue="0"
+        android:key="key_token"
+        android:summary="Set the token of your device"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Sensor token" />
+
     <PreferenceScreen
         android:id="@+id/stepCounter"
         android:icon="?android:attr/actionModePasteDrawable"
@@ -8,14 +17,20 @@
         android:persistent="false"
         android:title="Step Counter">
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_step_recom"
+            android:title="Auto target recommendation" />
+
         <EditTextPreference
             android:id="@+id/settings_step_target"
             android:defaultValue="10000"
             android:key="key_step_target"
-            android:summary="Set your daily step target"
+            android:summary="If you switched on target recommendation, this preference will be ignored"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Daily step target" />
+            android:title="Daily step target"
+            android:inputType="number"/>
 
         <SwitchPreference
             android:defaultValue="false"

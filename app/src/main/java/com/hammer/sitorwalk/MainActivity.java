@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.hammer.sitorwalk.Settings.SettingsActivity;
+import com.hammer.sitorwalk.SitCounter.SitCountService;
 import com.hammer.sitorwalk.StepCounter.PedometerFragment;
 import com.hammer.sitorwalk.StepCounter.StepCountService;
 
@@ -32,19 +33,33 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager;
 
     // Service binder
-    private StepCountService.PedometerBinder binder;
+    private StepCountService.PedometerBinder stepCountBinder;
+    private SitCountService.SitCounterBinder sitCounterBinder;
 
     // Service connection
     private ServiceConnection pedometerConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            binder = (StepCountService.PedometerBinder) service;
-            binder.startCounting();
+            stepCountBinder = (StepCountService.PedometerBinder) service;
+            stepCountBinder.startCounting();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
 
+
+        }
+    };
+
+    private ServiceConnection sitCounterConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            sitCounterBinder = (SitCountService.SitCounterBinder) service;
+            sitCounterBinder.startCounting();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
 
         }
     };
@@ -85,8 +100,9 @@ public class MainActivity extends AppCompatActivity
         Intent bindPedometerIntent = new Intent(this, StepCountService.class);
         bindService(bindPedometerIntent, pedometerConnection, BIND_AUTO_CREATE);
 
-
-
+        // Bid sit count service
+        Intent bindSitCounterIntent = new Intent(this, SitCountService.class);
+        bindService(bindSitCounterIntent, sitCounterConnection, BIND_AUTO_CREATE);
     }
 
     @Override

@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.hammer.sitorwalk.MainActivity;
@@ -27,14 +29,21 @@ public class PedometerFragment extends Fragment {
     private String mParam2;
 
     // Global variables for settings
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
     private int recordSteps;
+    private SharedPreferences settings;
 
     // View
-    View view;
+    private View view;
 
     // Widgets
-    TextView textPedo;
+    private TextView textPedo;
+    private TextView textTarget;
+    private Button btnHistory;
+
+    // Global variables for fragment
+    Fragment fragment;
+    FragmentManager fragmentManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,13 +81,20 @@ public class PedometerFragment extends Fragment {
 
         // Find widgets
         textPedo = (TextView)view.findViewById(R.id.textPedo);
+        textTarget = (TextView)view.findViewById(R.id.textTarget);
+        btnHistory = (Button)view.findViewById(R.id.btnHistory);
+
+        // Set fragment manager
+        fragmentManager = (getActivity()).getSupportFragmentManager();
 
         // Initialize shared settings
         sharedPref = getActivity().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        settings = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
         // Set pedometer step counts
         recordSteps = sharedPref.getInt(getString(R.string.settings_num_steps), 0);
         textPedo.setText(Integer.toString(recordSteps));
+        textTarget.setText("Your daily target: " + settings.getString("key_step_target", "0"));
 
         // Create step counts on change listener
         SharedPreferences.OnSharedPreferenceChangeListener stepCountChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -92,6 +108,15 @@ public class PedometerFragment extends Fragment {
 
         // Register shared perference on changed listener
         sharedPref.registerOnSharedPreferenceChangeListener(stepCountChangeListener);
+
+        // Create button on click listener
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new StepCountHistoryFragment();
+                fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+            }
+        });
 
         return view;
     }

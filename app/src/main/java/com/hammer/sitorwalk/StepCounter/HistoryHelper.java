@@ -19,7 +19,7 @@ public class HistoryHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //创建数据表
+        // Create table
         String CREATE_TABLE_STUDENT="CREATE TABLE "+ HistoryModel.TABLE+"("
                 +HistoryModel.KEY_ID+" INTEGER PRIMARY KEY AUTOINCREMENT ,"
                 +HistoryModel.KEY_DATE+" TEXT, "

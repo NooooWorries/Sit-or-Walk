@@ -4,11 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.hammer.sitorwalk.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class StepCountHistoryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +31,8 @@ public class StepCountHistoryFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private String[] historyArray;
 
     public StepCountHistoryFragment() {
         // Required empty public constructor
@@ -48,7 +60,20 @@ public class StepCountHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_step_count_history, container, false);
+        View view = inflater.inflate(R.layout.fragment_step_count_history, container, false);
+
+        // Get list
+        HistoryRepo repo = new HistoryRepo(this.getActivity());
+        ArrayList<HistoryModel> historyList = repo.getList();
+
+
+        // Get list view
+        ListView listView = (ListView) view.findViewById(R.id.step_count_history_list);
+
+        HistoryAdapter adapter = new HistoryAdapter(this.getContext(), historyList);
+        listView.setAdapter(adapter);
+
+        return view;
     }
 
     public void onButtonPressed(Uri uri) {
