@@ -21,6 +21,7 @@ import android.view.WindowManager;
 
 import com.hammer.sitorwalk.Settings.SettingsActivity;
 import com.hammer.sitorwalk.SitCounter.SitCountService;
+import com.hammer.sitorwalk.SitCounter.SitCounterFragment;
 import com.hammer.sitorwalk.StepCounter.PedometerFragment;
 import com.hammer.sitorwalk.StepCounter.StepCountService;
 
@@ -46,8 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
-
         }
     };
 
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
         }
     };
 
@@ -145,17 +143,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_sit) {
+            fragment = new SitCounterFragment();
+        } else if (id == R.id.nav_walk) {
             fragment = new PedometerFragment();
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_about) {
+            fragment = new AboutFragment();
         }
 
         // Launch fragment

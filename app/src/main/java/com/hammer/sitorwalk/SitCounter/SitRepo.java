@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hammer.sitorwalk.StepCounter.HistoryHelper;
 import com.hammer.sitorwalk.SitCounter.SitModel;
 
 import java.util.ArrayList;
@@ -15,10 +14,10 @@ import java.util.ArrayList;
  */
 
 public class SitRepo {
-    private HistoryHelper dbHelper;
+    private SitHelper dbHelper;
 
     public SitRepo(Context context){
-        dbHelper=new HistoryHelper(context);
+        dbHelper=new SitHelper(context);
     }
 
     public int insert(SitModel sit){

@@ -1,12 +1,20 @@
 package com.hammer.sitorwalk.SitCounter;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -16,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.hammer.sitorwalk.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +50,11 @@ public class SitCountService extends Service{
     RequestQueue queue;
     JsonObjectRequest getRequest;
 
+    // Global variables for notification
+    NotificationManager notificationManager;
+    NotificationCompat.Builder mBuilder;
+
+    private int count = 0;
 
     @Override
     public void onCreate() {
@@ -56,6 +70,12 @@ public class SitCountService extends Service{
 
         // Initialize request objects
         queue = Volley.newRequestQueue(this);
+
+        notificationManager = (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(getApplicationContext());
+
+        // Initialize notification
+
 
     }
 
@@ -82,6 +102,8 @@ public class SitCountService extends Service{
                 @Override
                 public void run() {
                     final String url = accessAddress;
+                    final int interval = Integer.parseInt(sharedPref.getString("key_sit_notification", "60"));
+                    Log.d("INTERVAL", Integer.toString(interval));
                     getRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null,
                             new Response.Listener<JSONObject>()
                             {
@@ -92,17 +114,35 @@ public class SitCountService extends Service{
                                     try{
                                         editor.putInt("sensor", 1).commit(); // connected
                                         value = response.getInt("analog");
-                                        if (value >= 1) {
+                                        if (value >= 1024) {
                                             int sitMinutes = sharedPref.getInt("sit", 0);
                                             sitMinutes ++;
                                             editor.putInt("sit", sitMinutes).commit();
+                                            count ++;
+                                            Log.d("NOTIFICATION", Integer.toString(count));
+                                            if (count >= interval) {
+                                                count = 0;
+                                                mBuilder.setContentTitle("Walk or Sit")
+                                                        .setContentText("It's time to leave your chair")
+                                                        .setTicker("Do some exercise")
+                                                        .setWhen(System.currentTimeMillis())
+                                                        .setPriority(Notification.PRIORITY_HIGH)
+                                                        .setOngoing(false)
+                                                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                                                        .setSmallIcon(R.mipmap.ic_launcher);
+                                                Notification notification = mBuilder.build();
+                                                notification.flags = Notification.FLAG_ONGOING_EVENT;
+                                                notificationManager.notify(0, notification);
+                                                Uri notificationPush = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notificationPush);
+                                                r.play();
+
+                                            }
                                         }
                                     }
                                     catch (JSONException e) {
                                         editor.putInt("sensor", 0).commit(); // disconnected
                                     }
-                                    Log.d("Response", Integer.toString(value) );
-                                    Log.d("value", Integer.toString(sharedPref.getInt("sensor", 0)));
                                 }
                             },
                             new Response.ErrorListener()
@@ -118,9 +158,9 @@ public class SitCountService extends Service{
                     queue.add(getRequest);
                     getRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    handler.postDelayed(this, 5000);
+                    handler.postDelayed(this, 60000);
                 }
-            }, 5000);
+            }, 60000);
         }
     }
 }

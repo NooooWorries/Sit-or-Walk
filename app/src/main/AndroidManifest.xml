@@ -9,9 +9,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <!-- End of permission list -->
+
 
     <!-- User feature list -->
     <uses-feature android:name="android.hardware.sensor.accelerometer" />
@@ -21,9 +22,8 @@
     <uses-feature
         android:name="android.hardware.sensor.stepdetector"
         android:required="true" />
+
     <!-- End of user feature list -->
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,16 +34,16 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Settings.SettingsActivity"
             android:label="SettingActivity"
             android:theme="@style/SettingsTheme" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,13 +52,19 @@
         </activity>
 
         <!-- Receiver list -->
-        <receiver android:name="com.hammer.sitorwalk.StepCounter.StepCountClear" />
+        <receiver android:name=".StepCounter.StepCountClear" />
+        <receiver android:name=".StepCounter.NotificationReceiver" />
         <!-- End of receiver list -->
+
 
         <!-- Services list -->
         <service android:name=".StepCounter.StepCountService" />
         <service android:name=".SitCounter.SitCountService" />
-        <!-- End of services list-->
+        <!-- End of services list -->
+        <activity
+            android:name=".Settings.PersonalInformationActivity"
+            android:label="@string/title_activity_personal_information"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

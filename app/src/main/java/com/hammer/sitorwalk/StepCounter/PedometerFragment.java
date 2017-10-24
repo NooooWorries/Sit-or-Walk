@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.hammer.sitorwalk.MainActivity;
 import com.hammer.sitorwalk.R;
+import com.hammer.sitorwalk.SitCounter.SitCounterFragment;
 
 public class PedometerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -40,6 +41,7 @@ public class PedometerFragment extends Fragment {
     private TextView textPedo;
     private TextView textTarget;
     private Button btnHistory;
+    private Button btnHistoryAll;
 
     // Global variables for fragment
     Fragment fragment;
@@ -83,6 +85,7 @@ public class PedometerFragment extends Fragment {
         textPedo = (TextView)view.findViewById(R.id.textPedo);
         textTarget = (TextView)view.findViewById(R.id.textTarget);
         btnHistory = (Button)view.findViewById(R.id.btnHistory);
+        btnHistoryAll = (Button) view.findViewById(R.id.btnHistoryAll);
 
         // Set fragment manager
         fragmentManager = (getActivity()).getSupportFragmentManager();
@@ -113,11 +116,18 @@ public class PedometerFragment extends Fragment {
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StepCountHistoryFragment();
+                fragment = new HistoryChart();
                 fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
             }
         });
 
+        btnHistoryAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new StepCountHistoryFragment();
+                fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+            }
+        });
         return view;
     }
 

@@ -1,5 +1,6 @@
 package com.hammer.sitorwalk;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.hammer.sitorwalk.SitCounter.SitChart;
+import com.hammer.sitorwalk.SitCounter.SitCountHistoryFragment;
+import com.hammer.sitorwalk.SitCounter.SitCounterFragment;
+import com.hammer.sitorwalk.StepCounter.HistoryChart;
 import com.hammer.sitorwalk.StepCounter.PedometerFragment;
 import com.hammer.sitorwalk.StepCounter.StepCountHistoryFragment;
 
@@ -30,6 +36,8 @@ public class HomeFragment extends Fragment {
     // Buttons
     private Button btnWalkDetail;
     private Button btnWalkHistory;
+    private Button btnSitDetail;
+    private Button btnSitHistory;
 
     // View
     View view;
@@ -97,6 +105,8 @@ public class HomeFragment extends Fragment {
         // Find buttons
         btnWalkDetail = (Button)view.findViewById(R.id.btnWalkDetail);
         btnWalkHistory = (Button)view.findViewById(R.id.btnWalkHistory);
+        btnSitDetail = (Button)view.findViewById(R.id.btnSitDetail);
+        btnSitHistory = (Button)view.findViewById(R.id.btnSitHistory);
 
         // Find text view
         textSteps = (TextView)view.findViewById(R.id.textStep);
@@ -120,6 +130,7 @@ public class HomeFragment extends Fragment {
 
         textConnection.setText("WAIT FOR ONE MINUTE");
         textConnection.setTextColor(Color.BLUE);
+
         // Add preference on changed listener (detect step counts change)
         SharedPreferences.OnSharedPreferenceChangeListener numStepsChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -130,6 +141,21 @@ public class HomeFragment extends Fragment {
             }
         };
         sharedPref.registerOnSharedPreferenceChangeListener(numStepsChangeListener);
+
+        // Load connection status
+        connectionStatus = settings.getInt("sensor", 0);
+        if (connectionStatus == 0) {
+            textConnection.setText("DISCONNECTED");
+            textConnection.setTextColor(Color.RED);
+        }
+        else if (connectionStatus == 1) {
+            textConnection.setText("CONNECTED");
+            textConnection.setTextColor(Color.BLUE);
+        }
+        else {
+            textConnection.setText("INTERNET ERROR");
+            textConnection.setTextColor(Color.RED);
+        }
 
         SharedPreferences.OnSharedPreferenceChangeListener sitCountChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -154,7 +180,6 @@ public class HomeFragment extends Fragment {
                     else {
                         textConnection.setText("INTERNET ERROR");
                         textConnection.setTextColor(Color.RED);
-
                     }
                 }
             }
@@ -175,7 +200,25 @@ public class HomeFragment extends Fragment {
         btnWalkHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StepCountHistoryFragment();
+                fragment = new HistoryChart();
+                fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+            }
+        });
+
+        // Sit detail
+        btnSitDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new SitCounterFragment();
+                fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
+            }
+        });
+
+        // Sit hostory
+        btnSitHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new SitChart();
                 fragmentManager.beginTransaction().replace(R.id.main_container, fragment, "TAG").commit();
             }
         });
