@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hammer.sitorwalk.com.hammer.sitorwalk.MainActivity"
+    tools:context="com.hammer.sitorwalk.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="635dp"
+        android:layout_height="match_parent"
         android:id="@+id/main_container"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp"></FrameLayout>

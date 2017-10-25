@@ -76,10 +76,10 @@
     </PreferenceScreen>
     <PreferenceScreen
         android:id="@+id/sitCounter"
-        android:icon="@drawable/ic_menu_manage"
+        android:icon="@drawable/ic_menu_send"
         android:key="key_step_counter"
         android:persistent="false"
-        android:title="Step Counter">
+        android:title="Sit Counter">
 
         <EditTextPreference
             android:id="@+id/settings_sit_notification"
